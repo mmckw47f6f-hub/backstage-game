@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Backstage — Creator Life Sim</title>
+<style>
+:root{--bg:#0d0d12;--card:#171720;--soft:#22222e;--text:#f5f5f7;--muted:#aaaab8;--accent:#ff5b9d;--good:#69d39b;--bad:#ff7777}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.app{max-width:520px;margin:auto;min-height:100vh;padding:env(safe-area-inset-top) 14px calc(88px + env(safe-area-inset-bottom))}.top{display:flex;justify-content:space-between;align-items:center;padding:16px 2px 10px}.brand{font-weight:800;font-size:22px}.pill{background:var(--soft);padding:8px 10px;border-radius:999px;font-size:13px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.card{background:var(--card);border:1px solid #282834;border-radius:18px;padding:15px;margin:10px 0}.stat{font-size:25px;font-weight:800}.label,.small{color:var(--muted);font-size:12px}.bar{height:8px;background:#2a2a35;border-radius:99px;overflow:hidden;margin-top:7px}.fill{height:100%;background:var(--accent)}button,input,select,textarea{font:inherit}button{border:0;border-radius:13px;background:var(--accent);color:white;font-weight:700;padding:12px 14px;cursor:pointer}.secondary{background:var(--soft)}.danger{background:#6d3038}.row{display:flex;gap:8px;align-items:center}.between{justify-content:space-between}.stack{display:grid;gap:9px}input,select,textarea{width:100%;background:#101017;border:1px solid #30303c;color:white;border-radius:12px;padding:11px}.tabs{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(520px,100%);display:grid;grid-template-columns:repeat(5,1fr);background:#14141cdd;backdrop-filter:blur(15px);border-top:1px solid #2b2b36;padding:8px 8px calc(8px + env(safe-area-inset-bottom))}.tab{background:transparent;color:var(--muted);font-size:11px;padding:8px 2px}.tab.active{color:white;background:#262631}.screen{display:none}.screen.active{display:block}.event{border-left:3px solid var(--accent);padding-left:10px}.post{padding:12px 0;border-bottom:1px solid #292934}.post:last-child{border:0}.money{color:var(--good)}.negative{color:var(--bad)}.tag{display:inline-block;padding:5px 8px;background:#282835;border-radius:999px;font-size:11px;margin:2px}.msg{background:#22222d;padding:10px;border-radius:13px;margin:7px 0}.right{margin-left:25%;background:#49273a}.shopitem{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:center;border-bottom:1px solid #292934;padding:10px 0}.shopitem:last-child{border:0}h2{margin:12px 0 4px;font-size:20px}h3{margin:0 0 7px}.notice{font-size:11px;color:var(--muted);line-height:1.4}.bigbtn{width:100%;margin-top:10px}.choice{width:100%;text-align:left;margin:5px 0}.avatar{width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,#ff5b9d,#8d5bff);display:grid;place-items:center;font-weight:800}
+</style></head>
+<body><div class="app">
+<div class="top"><div><div class="brand">Backstage</div><div class="small">fictional creator life simulator • all characters 21+</div></div><div class="row"><button id="newBtn" class="secondary" style="padding:8px 10px;font-size:12px">New</button><div class="pill" id="dayTop">Day 1</div></div></div>
+
+<section id="home" class="screen active">
+<div class="grid"><div class="card"><div class="label">Cash</div><div class="stat money" id="cash">$500</div></div><div class="card"><div class="label">Subscribers</div><div class="stat" id="subs">0</div></div><div class="card"><div class="label">Followers</div><div class="stat" id="followers">120</div></div><div class="card"><div class="label">Reputation</div><div class="stat" id="rep">50</div></div></div>
+<div class="card"><div class="between row"><b>Energy</b><span id="energyTxt">100/100</span></div><div class="bar"><div id="energyBar" class="fill" style="width:100%"></div></div></div>
+<div class="card"><h3>Today's situation</h3><div id="event" class="event">You're starting from a tiny apartment with a phone camera and a new account. Your first goal is 100 subscribers.</div><div id="eventChoices" class="stack" style="margin-top:10px"></div></div>
+<div class="card"><h3>How to play</h3><div class="small">Create posts to gain followers and subscribers. Set your monthly price in Stats. End the day to collect subscription revenue and recover energy. Spend earnings on upgrades in Life.</div></div><div class="card"><h3>Recent activity</h3><div id="activity" class="small">No activity yet.</div></div>
+<button id="endDayBtn" class="bigbtn">End Day</button>
+</section>
+
+<section id="create" class="screen"><h2>Create</h2><div class="card stack"><label class="small">Post type</label><select id="postType"><option value="casual">Casual update</option><option value="photos">Premium photo set</option><option value="behind">Behind-the-scenes</option><option value="live">Live session</option><option value="collab">Creator collaboration</option></select><label class="small">Effort</label><select id="effort"><option value="1">Quick — 10 energy</option><option value="2">Polished — 25 energy</option><option value="3">High production — 45 energy</option></select><label class="small">Unlock price</label><input id="price" type="number" min="0" max="100" value="10"><button id="publishBtn">Publish Post</button></div><div class="card"><h3>Your posts</h3><div id="posts" class="small">Nothing posted yet.</div></div></section>
+
+<section id="messages" class="screen"><h2>Messages</h2><div class="card"><div class="row"><div class="avatar">A</div><div><b>Alex • subscriber</b><div class="small">Recurring fictional fan</div></div></div><div id="chat"><div class="msg">Just found your page. What kind of stuff do you usually post?</div></div><div class="row"><input id="reply" placeholder="Reply..."><button id="sendBtn">Send</button></div><div class="notice" style="margin-top:8px">Prototype messages are procedural, not AI-generated. Later we can add persistent AI characters.</div></div></section>
+
+<section id="analytics" class="screen"><h2>Analytics</h2><div class="card stack"><div class="between row"><span>Subscription price</span><b>$<span id="subPriceTxt">8</span>/mo</b></div><input id="subPrice" type="range" min="3" max="30" value="8" oninput="setSubPrice(this.value)"></div><div class="grid"><div class="card"><div class="label">Lifetime revenue</div><div class="stat" id="revenue">$0</div></div><div class="card"><div class="label">Posts</div><div class="stat" id="postCount">0</div></div><div class="card"><div class="label">Avg. spend/sub</div><div class="stat" id="avgSpend">$0</div></div><div class="card"><div class="label">Days active</div><div class="stat" id="days">1</div></div></div><div class="card"><h3>Growth notes</h3><div id="growthNotes" class="small">Post consistently and keep your subscription price reasonable to grow.</div></div></section>
+
+<section id="shop" class="screen"><h2>Life & Upgrades</h2><div class="card" id="shopList"></div><div class="card"><h3>Lifestyle</h3><div class="between row"><span>Home</span><b id="homeName">Tiny apartment</b></div><div class="between row" style="margin-top:8px"><span>Equipment level</span><b id="gearLevel">1</b></div></div></section>
+</div>
+<nav class="tabs"><button class="tab active" data-screen="home">Home</button><button class="tab" data-screen="create">Create</button><button class="tab" data-screen="messages">DMs</button><button class="tab" data-screen="analytics">Stats</button><button class="tab" data-screen="shop">Life</button></nav>
+<script>
+const $=id=>document.getElementById(id);
+const defaults={day:1,cash:500,subs:0,followers:120,rep:50,energy:100,revenue:0,posts:[],subPrice:8,gear:1,home:0,owned:[],activity:[]};
+let saved={};
+try { saved=JSON.parse(window.localStorage.getItem('backstageSave')||'{}'); } catch(e) { saved={}; }
+let s=Object.assign({},defaults,saved);
+if(!Array.isArray(s.activity)) s.activity=[];
+if(!Array.isArray(s.posts)) s.posts=[];
+if(!Array.isArray(s.owned)) s.owned=[];
+const upgrades=[
+{id:'light',name:'Basic lighting kit',cost:180,desc:'+10% post performance'},
+{id:'camera',name:'Mirrorless camera',cost:900,desc:'+25% post performance'},
+{id:'marketing',name:'Marketing campaign',cost:350,desc:'+250 followers immediately'},
+{id:'studio',name:'Studio apartment',cost:3000,desc:'Better home; +10 reputation'},
+{id:'assistant',name:'Part-time assistant',cost:5500,desc:'+20 max effective energy each day'}];
+function save(){ try { window.localStorage.setItem('backstageSave',JSON.stringify(s)); } catch(e) {} render(); }
+function fmt(n){return Math.round(n).toLocaleString()}
+function render(){
+  $('dayTop').textContent='Day '+s.day;
+  $('cash').textContent='$'+fmt(s.cash);
+  $('subs').textContent=fmt(s.subs);
+  $('followers').textContent=fmt(s.followers);
+  $('rep').textContent=Math.round(s.rep);
+  const maxEnergy=s.owned.includes('assistant')?120:100;
+  $('energyTxt').textContent=Math.round(s.energy)+'/'+maxEnergy;
+  $('energyBar').style.width=Math.min(100,(s.energy/maxEnergy)*100)+'%';
+  $('revenue').textContent='$'+fmt(s.revenue);
+  $('postCount').textContent=s.posts.length;
+  $('days').textContent=s.day;
+  $('subPrice').value=s.subPrice;
+  $('subPriceTxt').textContent=s.subPrice;
+  $('avgSpend').textContent='$'+(s.subs?Math.round(s.revenue/s.subs):0);
+  $('gearLevel').textContent=s.gear;
+  $('homeName').textContent=s.home?'Studio apartment':'Tiny apartment';
+  $('posts').innerHTML=s.posts.length?s.posts.slice().reverse().map(p=>`<div class="post"><b>${p.name}</b><div class="small">Day ${p.day} • $${p.price} unlock • ${p.likes} likes • $${p.earned} earned</div></div>`).join(''):'Nothing posted yet.';
+  $('activity').innerHTML=s.activity.length?s.activity.slice(0,8).join('<br><br>'):'No activity yet.';
+  renderShop();
+}
+function show(id,btn){
+ document.querySelectorAll('.screen').forEach(function(x){x.classList.remove('active')});
+ $(id).classList.add('active');
+ document.querySelectorAll('.tab').forEach(function(x){x.classList.remove('active')});
+ if(btn)btn.classList.add('active');
+}
+function setSubPrice(v){s.subPrice=+v;$('subPriceTxt').textContent=v;save()}
+function log(t){s.activity.unshift(t); if(s.activity.length>20)s.activity.length=20}
+function publishPost(){let e=+$('effort').value,cost=[0,10,25,45][e];if(s.energy<cost){toast('Not enough energy — end the day to recover.');return;}let names={casual:'Casual update',photos:'Premium photo set',behind:'Behind-the-scenes',live:'Live session',collab:'Creator collaboration'};let type=$('postType').value,p=+$('price').value||0;let gear=1+(s.owned.includes('light') ? 0.1 : 0)+(s.owned.includes('camera') ? 0.25 : 0);let quality=e*gear;let reach=Math.round((25+s.followers*.06)*quality*(.75+Math.random()*.5));let newFollowers=Math.max(1,Math.round(reach*(.15+Math.random()*.15)));let conversion=Math.max(.01,.11-(s.subPrice-3)*.003);let newSubs=Math.round(newFollowers*conversion);let buyers=Math.round((s.subs+newSubs)*Math.max(.02,.22-p*.002));let earned=Math.round(buyers*p*(.65+Math.random()*.45));if(type==='collab'){newFollowers=Math.round(newFollowers*1.7);s.rep+=2}if(type==='live')earned=Math.round(earned*1.3);s.energy-=cost;s.followers+=newFollowers;s.subs+=newSubs;s.cash+=earned;s.revenue+=earned;s.rep=Math.min(100,s.rep+e*.5);s.posts.push({name:names[type],day:s.day,price:p,likes:Math.round(reach*.3),earned});log(`Posted ${names[type]}: +${newFollowers} followers, +${newSubs} subscribers, <span class="money">+$${earned}</span>.`);save()}
+function nextDay(){let monthly=Math.round(s.subs*s.subPrice/30);let churn=Math.round(s.subs*Math.max(.005,(s.subPrice-12)*.002));s.subs=Math.max(0,s.subs-churn);s.cash+=monthly;s.revenue+=monthly;s.day++;s.energy=s.owned.includes('assistant')?120:100;let r=Math.random();$('eventChoices').innerHTML='';if(r<.25){$('event').textContent='A short post unexpectedly starts trending. Do you spend $75 promoting it?';$('eventChoices').innerHTML='<button class="choice" data-event="promo">Promote it — $75</button><button class="choice secondary" data-event="clear">Let it ride</button>'}else if(r<.5){$('event').textContent='A small brand offers $120 for a sponsored post. It may annoy a few followers.';$('eventChoices').innerHTML='<button class="choice" data-event="sponsor">Take the deal</button><button class="choice secondary" data-event="clear">Decline</button>'}else if(r<.7){$('event').textContent='You feel burned out. Take a personal day for +4 reputation, or keep grinding.';$('eventChoices').innerHTML='<button class="choice" data-event="rest">Take personal day</button><button class="choice secondary" data-event="clear">Keep working</button>'}else{$('event').textContent='Nothing dramatic today. Consistency is doing the work.'}log(`Day ${s.day} started. Subscription revenue today: <span class="money">+$${monthly}</span>${churn?`, ${churn} subscriber(s) churned`:''}.`);save()}
+function clearEvent(){$('event').textContent='You move on and focus on the rest of the day.';$('eventChoices').innerHTML='';save()}
+function eventPromo(){if(s.cash<75){toast('Not enough cash.');return;}s.cash-=75;let gain=100+Math.round(Math.random()*250);s.followers+=gain;s.subs+=Math.round(gain*.06);log(`Promotion brought ${gain} followers.`);clearEvent()}
+function eventSponsor(){s.cash+=120;s.revenue+=120;s.rep=Math.max(0,s.rep-1);log('Completed sponsorship: +$120, -1 reputation.');clearEvent()}
+function eventRest(){s.rep=Math.min(100,s.rep+4);s.energy=100;log('Personal day improved reputation and restored energy.');clearEvent()}
+function sendReply(){let t=$('reply').value.trim();if(!t)return;$('chat').innerHTML+=`<div class="msg right">${escapeHtml(t)}</div>`;$('reply').value='';let responses=['That makes sense. I like that you actually reply here.','Nice. I’ll keep an eye out for the next update.','Okay, you convinced me to stick around another month.','I was wondering about that. Thanks for answering.'];setTimeout(()=>{$('chat').innerHTML+=`<div class="msg">${responses[Math.floor(Math.random()*responses.length)]}</div>`;$('chat').scrollTop=$('chat').scrollHeight},350);s.rep=Math.min(100,s.rep+.2);save()}
+function escapeHtml(x){return x.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function renderShop(){$('shopList').innerHTML=upgrades.map(u=>{let own=s.owned.includes(u.id);return `<div class="shopitem"><div><b>${u.name}</b><div class="small">${u.desc}</div><div class="money">$${fmt(u.cost)}</div></div><button ${own?'disabled':''} class="${own?'secondary':''}">${own?'Owned':'Buy'}</button></div>`}).join('')}
+function buy(id){let u=upgrades.find(x=>x.id===id);if(s.owned.includes(id))return;if(s.cash<u.cost){toast('Not enough cash.');return;}s.cash-=u.cost;s.owned.push(id);if(id==='marketing')s.followers+=250;if(id==='studio'){s.home=1;s.rep=Math.min(100,s.rep+10)}if(id==='camera')s.gear++;log(`Purchased ${u.name} for $${u.cost}.`);save()}
+
+function toast(message){
+  let el=$('toast');
+  if(!el){
+    el=document.createElement('div'); el.id='toast';
+    el.style.cssText='position:fixed;left:50%;bottom:95px;transform:translateX(-50%);background:#f5f5f7;color:#111;padding:10px 14px;border-radius:12px;font-weight:700;z-index:99;max-width:88%;text-align:center;box-shadow:0 8px 30px #0008';
+    document.body.appendChild(el);
+  }
+  el.textContent=message; el.style.display='block';
+  clearTimeout(window.__toastTimer); window.__toastTimer=setTimeout(()=>el.style.display='none',1800);
+}
+function resetGame(){
+ try { window.localStorage.removeItem('backstageSave'); } catch(e) {}
+ s=JSON.parse(JSON.stringify(defaults));
+ $('event').textContent="You're starting from a tiny apartment with a phone camera and a new account. Your first goal is 100 subscribers.";
+ $('eventChoices').innerHTML='';
+ save(); toast('New game started');
+}
+
+function wireControls(){
+ document.addEventListener('click',function(e){
+   var tab=e.target.closest('[data-screen]');
+   if(tab){show(tab.getAttribute('data-screen'),tab);return;}
+   var ev=e.target.closest('[data-event]');
+   if(ev){
+     var a=ev.getAttribute('data-event');
+     if(a==='promo')eventPromo(); else if(a==='sponsor')eventSponsor(); else if(a==='rest')eventRest(); else clearEvent();
+     return;
+   }
+   var b=e.target.closest('[data-buy]');
+   if(b){buy(b.getAttribute('data-buy'));return;}
+ });
+ $('newBtn').addEventListener('click',resetGame);
+ $('endDayBtn').addEventListener('click',nextDay);
+ $('publishBtn').addEventListener('click',publishPost);
+ $('sendBtn').addEventListener('click',sendReply);
+ $('subPrice').addEventListener('input',function(){setSubPrice(this.value)});
+ $('reply').addEventListener('keydown',function(e){if(e.key==='Enter')sendReply()});
+}
+
+window.addEventListener('error',e=>{
+  const box=document.createElement('div');
+  box.style.cssText='position:fixed;top:10px;left:10px;right:10px;background:#6d3038;color:white;padding:12px;border-radius:12px;z-index:999;font-size:12px';
+  box.textContent='Game error: '+e.message;
+  document.body.appendChild(box);
+});
+wireControls();
+render();
+$('runtimeStatus').textContent='Game engine loaded • fictional characters are adults 21+ • saving is enabled when browser storage is available.';
+</script></body></html>
